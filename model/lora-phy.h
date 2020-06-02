@@ -52,6 +52,9 @@ public:
    * \param arrivalList  List of interfering arrivals given from Transducer.
    * \return The SINR in dB re 1 uPa.
    */
+
+
+
   virtual double CalcSinrDb (Ptr<Packet> pkt,
                              Time arrTime,
                              double rxPowerDb,
@@ -503,6 +506,20 @@ public:
    */
   static TypeId GetTypeId (void);
 
+protected:
+
+ bool m_transmission;
+ double m_power;
+ uint32_t m_channelIndex;
+ double m_bitErrors;
+ double m_lastCheck;
+ double m_channelUsage [8][30];
+ double m_k;
+ double m_temperature;
+ uint32_t m_bandwidth;
+ uint8_t m_spreadingfactor;
+
+
 private:
   /**
    * Trace source indicating a packet has begun transmitting
@@ -545,12 +562,20 @@ private:
   ns3::TracedCallback<Ptr<const Packet> > m_phyRxEndTrace;
 
   /**
+   * Notify the instance of an incoming signal
+   *
+   * \param params the parameters of the signals being received
+   */
+  void StartRx (Ptr<const Packet> packet);
+
+  /**
    * Trace source indicating a packet has been dropped by the device
    * during reception.
    *
    * \see class CallBackTraceSource
    */
   ns3::TracedCallback<Ptr<const Packet> > m_phyRxDropTrace;
+  State m_state; //!< state of the transceiver
 
 };  // class LoraPhy
 

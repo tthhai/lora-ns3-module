@@ -173,6 +173,34 @@ public:
    */
   typedef void (* RxTxTracedCallback)
     (const Ptr<const Packet> packet, const LoraAddress address);
+
+
+protected:
+
+  uint8_t m_nbRep;
+  uint8_t m_rep;
+  bool m_linkUp;
+  uint16_t m_channelIndex;
+  bool channelAvailable [16] = {true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false};
+  uint8_t m_delay;
+  uint16_t m_seqNum;
+
+
+  uint8_t retransmissionCount;
+  uint8_t m_dutyCycle; //maximal allowed dutycycle
+  double m_waitingFactor;
+  uint32_t missedCount; 
+  uint32_t arrivedCount;
+  uint8_t m_powerIndex; //power index to transmit with
+  uint32_t m_rx2Freq; // Frequency of the second reception
+  uint8_t m_rx2Datarate;
+  uint8_t m_rx1Offset; //Settings of the RX2
+  bool m_reset; 
+  uint8_t m_ackCnt; 
+  uint8_t ADR_ACK_LIMIT = 64;
+  uint8_t spreading [16] = {12,11,10,9,8,7,7,1,1,1,1,1,1,1,1,1}; 
+
+
   
 private:
   /**

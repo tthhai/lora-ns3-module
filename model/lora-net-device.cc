@@ -446,42 +446,12 @@ void
 LoraNetDevice::TransmitStart (void)
 {
   NS_LOG_FUNCTION_NOARGS ();
-/*
-  
-  NS_ASSERT_MSG ((m_txMachineState == READY) || (m_txMachineState == BACKOFF), 
-                 "Must be READY to transmit. Tx state is: " << m_txMachineState);
 
-  //
+   
   // Now we have to sense the state of the medium and either start transmitting
   // if it is idle, or backoff our transmission if someone else is on the wire.
   //
-  if (m_channel->GetState (m_protocolNumber) != IDLE)
-    {
-      //
-      // The channel is busy -- backoff and rechedule TransmitStart() unless
-      // we have exhausted all of our retries.
-      //
-      m_txMachineState = BACKOFF;
 
-      if (m_backoff.MaxRetriesReached ())
-        { 
-          //
-          // Too many retries, abort transmission of packet
-          //
-          TransmitAbort ();
-        } 
-      else 
-        {       
-          m_backoff.IncrNumRetries ();
-          Time backoffTime = m_backoff.GetBackoffTime ();
-
-          NS_LOG_LOGIC ("Channel busy, backing off for " << backoffTime.GetSeconds () << " sec");
-
-          Simulator::Schedule (Seconds(backoffTime), &LoraNetDevice::TransmitStart, this);
-        }
-    } 
-  else 
-    {
       // The channel is free, transmit the packet
 
         if (m_mac->Enqueue (m_currentPkt, m_dest, m_protocolNumber) == false)
@@ -502,15 +472,13 @@ LoraNetDevice::TransmitStart (void)
           // Transmission succeeded, reset the backoff time parameters and
           // schedule a transmit complete event.
           //
-          m_backoff.ResetBackoffTime ();
+
           m_txMachineState = BUSY;
           Time tEvent = m_bps.CalculateBytesTxTime (13);
           NS_LOG_LOGIC ("Schedule TransmitCompleteEvent in " << tEvent.GetSeconds () << "sec");
           Simulator::Schedule (Seconds(tEvent), &LoraNetDevice::TransmitCompleteEvent, this);
-        }
+       }
 
-    }
-*/
 
 }
 

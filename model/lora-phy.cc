@@ -18,10 +18,13 @@
  */
 
 #include "lora-phy.h"
+#include <ns3/log.h>
 
 namespace ns3 {
 
 NS_OBJECT_ENSURE_REGISTERED (LoraPhyCalcSinr);
+
+NS_LOG_COMPONENT_DEFINE ("LoraPhyCalcSinr");
 
 TypeId LoraPhyCalcSinr::GetTypeId (void)
 {
@@ -109,6 +112,7 @@ TypeId LoraPhy::GetTypeId (void)
 }
 
 
+
 void
 LoraPhy::NotifyTxBegin (Ptr<const Packet> packet)
 {
@@ -132,6 +136,19 @@ LoraPhy::NotifyRxBegin (Ptr<const Packet> packet)
 {
   m_phyRxBeginTrace (packet);
 }
+
+
+void
+LoraPhy::StartRx (Ptr<const Packet> packet)
+{
+	NS_LOG_FUNCTION (this);
+	Ptr<Packet> copy = packet->Copy();
+	if (m_state == TX)
+	{
+  	  m_transmission = true;
+	}
+}
+
 
 void
 LoraPhy::NotifyRxEnd (Ptr<const Packet> packet)
